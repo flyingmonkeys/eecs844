@@ -1,4 +1,5 @@
 clear all;
+hold off;
 
 load p2.mat;
 
@@ -16,9 +17,9 @@ R = (1/N)*X*ctranspose(X);
 
 [V, lambda] = eig(R);
 diag(lambda)
-c = cond(R)
+c = cond(R) % same as max(lambda)/min(lambda)
 [V_invR, lambda_invR] = eig(inv(R));
-diag(lambda_invR)
+diag(lambda_invR) % these should yield 1/diag(lambda)
 c_invR = cond(inv(R))
 
 % eigenvalues of inv(R) are 1/eigenvalues of R
@@ -40,9 +41,26 @@ lambda_new = eig(R_new)
 c_new = cond(R_new)
 
 % R_new shows strong diagonal, pre=multiplying ctranspose(V) to X yields whitened signal
-% Calculate Cov(Xnew) = Cov(V’XX’V) = V’RoldV
-% Then Rold = VRnewV’ means Rnew is diag matrix of eigenvalues
+% Calculate Cov(Xnew) = Cov(V'XXV) = V'RoldV
+% Then Rold = VRnewV' means Rnew is diag matrix of eigenvalues
 % verify this by comparing diagonal of Rnew with lambda_new
 % https://theclevermachine.wordpress.com/tag/covariance-matrix/
 
+% Plots
+figure(1)
+eigval_R = 20*log10(real(diag(lambda)));
+eigval_Rinv = flipud(20*log10(real(diag(lambda_invR))));
+plot(eigval_R,'color','blue');
+hold on;
+plot(eigval_Rinv,'color','red');
+title('Exam 1 Problem 2');
+legend({'eigval_R','eigval_Rinv'});
 
+figure(2)
+eigval_R_loaded = 20*log10(real(lambda_loaded));
+eigval_Rinv_loaded = 20*log10(real(lambda_invR_loaded));
+plot(eigval_R_loaded,'color','blue');
+hold on;
+plot(eigval_Rinv_loaded,'color','red');
+title('Exam 1 Problem 3');
+legend({'eigval_R','eigval_Rinv'});
