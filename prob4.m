@@ -7,7 +7,7 @@ load p2.mat; % loads x
 M = 8;
 K = length(x);
 N = K-M+1;
-X = zeros(M,K);
+X = zeros(M,N);
 R = zeros(M,M);
 
 % Create X matrix

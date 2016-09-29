@@ -44,12 +44,12 @@ grid on;
 
 % Beampattern (spatial angle)
 figure(2);
-plot(theta,20*log10(abs(beampattern_w_adap_s)));
+plot(phi,20*log10(abs(beampattern_w_adap_s)));
 title('Adaptive filter response');
 xlabel('Spatial Theta (rad)');
 ylabel('Magnitude (dB)');
-axis([-pi pi -60 5]);
+axis([-pi/2 pi/2 -60 5]);
 hold on;
-plot(theta,20*log10(abs(beampattern_w_non_adap_s)),'color','red','linestyle',':');
+plot(phi,20*log10(abs(beampattern_w_non_adap_s)),'color','red','linestyle',':');
 legend({'Adaptive','Non-adaptive'});
 grid on;
