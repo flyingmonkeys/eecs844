@@ -44,7 +44,6 @@ lambda_invR_loaded = eig(inv(R_loaded));
 % Calculate Cov(Xnew) = Cov(V'XXV) = V'RoldV
 % Then Rold = VRnewV' means Rnew is diag matrix of eigenvalues
 % verify this by comparing diagonal of Rnew with lambda_new
-% https://theclevermachine.wordpress.com/tag/covariance-matrix/
 
 % Plots
 figure(1)
