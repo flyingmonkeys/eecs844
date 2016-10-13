@@ -11,7 +11,7 @@ M = 10;          % filter length
 numsamps = 20*M; % oversampled angular increments
 L = [10 20 K-M+1]; % snapshot lengths
 
-s = zeros(numsamps,1); % steering vector matrix
+s = zeros(M,1); % steering vector matrix
 MVDR = zeros(numsamps,length(L)); % MVDR power spectrums
 MVDR_loaded = zeros(numsamps,length(L)); % loaded MVDR power spectrum
 
