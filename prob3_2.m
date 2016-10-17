@@ -39,7 +39,7 @@ for idx=1:numsamps
 end
 
 %% Compute MVDR beamformers
-peak_angles = [-0.5841 -0.3947 0.742]; % peaks in radians
+peak_angles = [-0.5841 -0.3947 0.742 0.0]; % peaks in radians
 w = zeros(M,length(peak_angles)); % weights for each of the 3 observed peaks
 MVDR_response = zeros(numsamps,length(peak_angles));
 
@@ -80,6 +80,16 @@ hold on;
 plot(theta,20*log10(abs(MVDR_response(:,2))),'color','red');
 plot(theta,20*log10(abs(MVDR_response(:,3))),'color','green');
 legend({'-0.58','-0.39','0.74'});
+grid on;
+
+% Boresight constraint
+figure(3);
+plot(theta,20*log10(abs(MVDR_response(:,4))));
+title('MVDR Beampattern, Boresight at unity');
+xlabel('Electrical Theta (rad)');
+ylabel('Magnitude (dB)');
+axis([-pi pi -40 40]);
+legend({'0.0'});
 grid on;
 
 
