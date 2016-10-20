@@ -1,10 +1,12 @@
-% Exam 2 Problem 1
+% Exam 2 Problem 2
 
 clear all;
 close all;
 hold off;
 
-load p1.mat; % loads x and d
+d = randn(5000,1) + j*randn(5000,1);
+h = [0.7+j*0.7 0.2-j*0.5 -0.35+j*0.9 0.2+j*0.5];
+x = filter(conj(h),1,d);
 
 M_MAX = 50;
 W            = zeros(M_MAX,1);
@@ -22,6 +24,11 @@ for M=0:M_MAX
         W(1) = 1.0; % no filter
     else
         % Calculate Wiener filter weights
+        
+        % Calculate R
+%        xc = xcorr(x,x,M-1,'unbiased');
+%        r = xc(M:end);
+%        R = toeplitz(r,conj(r));
         
         % Create X matrix
         X = zeros(M,K-M+1);
@@ -59,6 +66,13 @@ for M=0:M_MAX
         mse_analytic(M+1) = mse_direct(M+1); % no R or P to calc analytic error
     end
 end
+
+% Calculate Ryy
+%Ryy = ctranspose(h)*R*h;
+%Pxy = ctranspose(h)*P;
+%ww = inv(Ryy)*Pxy;
+
+%z = filter(conj(ww),1,x);
 
 % Plots
 figure(1)

@@ -1,0 +1,10 @@
+The raw response shows the composite signal of all signals coming from all directions.
+
+The non-adaptive filter, which simply peaks at the boresight angle, will filter out signals
+from outside the main lobe, but as seen in problem 3, there are signals of interest close to
+the boresight and presumably within the main lobe or first sidelobe, so the signal magnitude,
+which smaller than the raw signal, is still fairly high.
+
+The MVDR filter, developed in problem 3d, is designed to admit signals at the boresight with
+unity gain, and reject (null) stronger signals outside the boresight. As expected, the time
+domain magnitude response is much lower, and is very close to unity.

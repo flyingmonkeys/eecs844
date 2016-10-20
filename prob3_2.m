@@ -71,16 +71,29 @@ grid on;
 
 % MVDR beamformers
 figure(2);
+h0(1)=subplot(3,1,1);
 plot(theta,20*log10(abs(MVDR_response(:,1))));
-title('MVDR Beampatterns');
+grid on;
+title('MVDR Beampattern, -0.5841 rad');
 xlabel('Electrical Theta (rad)');
 ylabel('Magnitude (dB)');
-axis([-pi pi -40 40]);
-hold on;
+axis([-pi pi -30 30]);
+h0(2)=subplot(3,1,2);
 plot(theta,20*log10(abs(MVDR_response(:,2))),'color','red');
-plot(theta,20*log10(abs(MVDR_response(:,3))),'color','green');
-legend({'-0.58','-0.39','0.74'});
 grid on;
+title('MVDR Beampattern, -0.3947 rad');
+xlabel('Electrical Theta (rad)');
+ylabel('Magnitude (dB)');
+axis([-pi pi -30 30]);
+h0(2)=subplot(3,1,3);
+plot(theta,20*log10(abs(MVDR_response(:,3))),'color','green');
+grid on;
+title('MVDR Beampattern, 0.742 rad');
+xlabel('Electrical Theta (rad)');
+ylabel('Magnitude (dB)');
+axis([-pi pi -30 30]);
+linkaxes(h0,'x');
+
 
 % Boresight constraint
 figure(3);
@@ -88,8 +101,8 @@ plot(theta,20*log10(abs(MVDR_response(:,4))));
 title('MVDR Beampattern, Boresight at unity');
 xlabel('Electrical Theta (rad)');
 ylabel('Magnitude (dB)');
-axis([-pi pi -40 40]);
-legend({'0.0'});
+axis([-pi pi -50 10]);
+legend({'0.0 degrees'});
 grid on;
 
 

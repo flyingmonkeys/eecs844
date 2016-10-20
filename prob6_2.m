@@ -6,15 +6,16 @@ hold off;
 
 load p3.mat; % loads X
 
-Lx = length(X);   % number of snapshots
-L = 5;           % number of constraints
+Lx = length(X);  % number of snapshots
+L = 6;           % number of constraints
 M = 10;          % number of array elements
 numsamps = 20*M; % oversampled angular increments
 
 MVDR = zeros(numsamps,1); % MVDR power spectrum
-p = zeros(numsamps,1); % non-adaptive power spectrum
+p = zeros(numsamps,1);    % GSC power spectrum
+pp =  zeros(numsamps,1);  % non-adaptive power spectrum
 
-% Compute correlation matrix based on L snapshots
+% Compute correlation matrix based on Lx snapshots
 R = (1/Lx)*X*ctranspose(X);
 R_inv = inv(R);
 
@@ -28,36 +29,36 @@ for k=1:M
 end
 [Q,lambda] = eig(Rc);
 
-% by inspection, there are two principle eigenvalues, so take the two
-% eigenvectors of Rc corresponding to those two eigenvalues
+% by inspection, there are two principle eigenvalues, but take up to L
+% eigenvalues (L constraints)
 C = Q(:,M-L+1:M);
-C(:,1) = s0;
+C(:,1) = s0;      % boresight constraint
 
 g = zeros(L,1);
-g(1) = 1.0;
+g(1) = 1.0; % unity gain constraint
 
 % Form Ca
 [U,S,V] = svd(C);
 Ca = U(:,L+1:M);
 
+% Compute wq
 v = inv(ctranspose(C)*C) * g;
 wq = C*v;
 
 % Compute wa(optimal)
 wa = inv(ctranspose(Ca)*R*Ca)*ctranspose(Ca)*R*wq;
-
 w = wq - Ca*wa;
 
 %% Compute Power spectrums
 theta = linspace(-pi,pi,numsamps);
-
+theta_deg = theta*180/pi;
 
 % Compute non-adaptive beamformer response
 for idx=1:numsamps
     % Compute steering matrix (electrical angle)
     s = transpose(exp(-j*theta(idx)*linspace(0,M-1,M)));
-    pp(idx) = ctranspose(s)*wq;
-    p(idx) = ctranspose(s)*w;
+    pp(idx) = ctranspose(s)*wq; % adaptive power spectrum
+    p(idx) = ctranspose(s)*w;   % GSC power spectrum
 end
 
 
@@ -75,15 +76,15 @@ end
 
 % MVDR Power Spectrum (electrical angle)
 figure(1);
-plot(theta,20*log10(abs(p)));
-title('GSC Beampattern');
+plot(theta_deg,20*log10(abs(p)));
+title('GSC Beampattern, 6 contraints');
 xlabel('Electrical Theta (rad)');
 ylabel('Magnitude (dB)');
-axis([-pi pi -50 30]);
+axis([-180 180 -60 40]);
 hold on;
-plot(theta,20*log10(abs(pp)),'color','red');
-plot(theta,20*log10(abs(MVDR_response)),'color','green');
-legend({'Adaptive+non-adaptive','Non-adaptive','MVDR 0 degrees'});
+plot(theta_deg,20*log10(abs(pp)),'color','red');
+plot(theta_deg,20*log10(abs(MVDR_response)),'color','green');
+legend({'Adaptive+non-adaptive (w)','Non-adaptive (wq)','MVDR 0 degrees'});
 grid on;
 
 

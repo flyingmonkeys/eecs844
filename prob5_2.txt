@@ -1,0 +1,7 @@
+In general, the GSC works as well or better than the MVDR filter. By using a degree of
+freedom to concentrate a null at a chosen location, the null is much deeper than that
+created by the MVDR filter.
+
+Since there are only 3 (known) signals, and 10 array elements, the GSC has enough
+degrees of freedom to effectively create the null while still meeting the unity gain
+constraint and the single null constraint.
