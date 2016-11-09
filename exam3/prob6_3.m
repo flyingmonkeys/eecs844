@@ -69,7 +69,7 @@ plot(theta,20*log10(abs(MVDR)),'color','red');
 plot(theta,20*log10(abs(MVDR_fb)),'color','green');
 plot(theta,20*log10(abs(MVDR_I)),'color','blue');
 plot(theta,20*log10(abs(MVDR_fb_I)),'color','yellow');
-legend({'Non-adaptive','MVDR R','MVDR Rfb'});
+legend({'Non-adaptive','MVDR R','MVDR Rfb','MVDR R loaded','MVDR Rfb loaded'});
 grid on;
 
 
