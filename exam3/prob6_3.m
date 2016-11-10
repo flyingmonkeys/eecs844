@@ -22,12 +22,12 @@ R_inv = inv(R);
 R_I_inv = inv(R_I);
 
 %% Compute Power spectrums
-theta = linspace(-pi,pi,numsamps);
+theta = linspace(-180,180,numsamps);
 
 % Compute non-adaptive power spectrum
 for idx=1:numsamps
     % Compute steering matrix (electrical angle)
-    s = transpose(exp(-j*theta(idx)*linspace(0,M-1,M)));
+    s = transpose(exp(-j*(theta(idx)*pi/180)*linspace(0,M-1,M)));
     for k=1:L-5
         p(idx) = p(idx) + (ctranspose(s)*X(:,k))^2;
     end
@@ -47,7 +47,7 @@ Rfb_I_inv = inv(Rfb_I);
 % Compute MVDR for both R matrices
 for idx=1:numsamps
     % Compute steering matrix (electrical angle)
-    s = transpose(exp(-j*theta(idx)*linspace(0,M-1,M)));
+    s = transpose(exp(-j*(theta(idx)*pi/180)*linspace(0,M-1,M)));
     MVDR(idx) = 1.0 / ( ctranspose(s)*R_inv*s );
     MVDR_fb(idx) = 1.0 / (ctranspose(s)*Rfb_inv*s );
     MVDR_I(idx) = 1.0 / ( ctranspose(s)*R_I_inv*s );
@@ -61,9 +61,9 @@ end
 figure(1);
 plot(theta,20*log10(abs(p)));
 title('MVDR Power Spectrum');
-xlabel('Electrical Theta (rad)');
+xlabel('Electrical Theta (deg)');
 ylabel('Magnitude (dB)');
-axis([-pi pi -40 60]);
+axis([-180 180 -40 60]);
 hold on;
 plot(theta,20*log10(abs(MVDR)),'color','red');
 plot(theta,20*log10(abs(MVDR_fb)),'color','green');
