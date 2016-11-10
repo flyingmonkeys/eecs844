@@ -15,18 +15,18 @@ h_nmf = flipud(conj(x))/(ctranspose(x)*x);
 
 figure(1);
 plot(20*log10(abs(conv(x,h_nmf))));
-title('Normalized matched filter');
+grid on;
+title('Normalized Matched Filter');
 
 %% Compute LS mismatched filter (h_mmf)
 
 % Form A
-A = zeros(M+N,N+1);
-for idx=1:N+1
-    A(idx:idx+M-1,idx) = x;
-end
+a = zeros(3*M,1);
+a(1:M) = x;
+A = toeplitz(a,zeros(N+1,1));
 
 % Form elementary vector e
-e = zeros(M+N,1);
+e = zeros(3*M,1);
 e(m) = 1;
 
 h_mmf = inv(ctranspose(A)*A)*ctranspose(A)*e;
@@ -35,8 +35,10 @@ mismatch_loss = -20*log10( max(abs(conv(h_nmmf,x)))/max(abs(conv(h_nmf,x))) );
 fprintf('Mismatch loss, LS mismatched filter: %.2f dB\n',mismatch_loss);
 
 figure(2);
-plot(20*log10(abs(conv(x,h_nmmf))));
-title('Normalized mismatched filter');
+plot(20*log10(abs(conv(x,h_nmmf))),'color','black');
+grid on;
+title('LS Mismatched Filter');
+hold on;
 
 
 %% Compute LS mismatched filter with modified A
@@ -49,9 +51,10 @@ h_nmmf_mod = h_mmf_mod/(sqrtm(ctranspose(h_mmf_mod)*h_mmf_mod)*sqrtm(ctranspose(
 mismatch_loss = -20*log10( max(abs(conv(h_nmmf_mod,x)))/max(abs(conv(h_nmf,x))) );
 fprintf('Mismatch loss, LS mismatched filter with modified A: %.2f dB\n',mismatch_loss);
 
-figure(3);
+%figure(3);
 plot(20*log10(abs(conv(x,h_nmmf_mod))));
-title('LS mismatched filter with modified A');
+%grid on;
+%title('LS Mismatched Filter, modified A');
 
 %% Compute LS mismatched filter with diagonal loading
 h_mmf_diag = inv(ctranspose(A)*A + 0.02*max(eig(ctranspose(A)*A))*eye(N+1,N+1))*ctranspose(A)*e;
@@ -59,9 +62,11 @@ h_nmmf_diag = h_mmf_mod/(sqrtm(ctranspose(h_mmf_diag)*h_mmf_diag)*sqrtm(ctranspo
 mismatch_loss = -20*log10( max(abs(conv(h_nmmf_diag,x)))/max(abs(conv(h_nmf,x))) );
 fprintf('Mismatch loss, LS mismatched filter with diagonal loading: %.2f dB\n',mismatch_loss);
 
-figure(4);
-plot(20*log10(abs(conv(x,h_nmmf_diag))));
-title('LS mismatched filter with diagonal loading');
+%figure(4);
+hold on;
+plot(20*log10(abs(conv(x,h_nmmf_diag))),'color','red');
+%grid on;
+%title('LS Mismatched Filter, diagonal loading');
 
 %% Compute LS mismatched filter with modified A and diagonal loading
 h_mmf_mod_diag = inv(ctranspose(A_mod)*A_mod + 0.02*max(eig(ctranspose(A_mod)*A_mod))*eye(N+1,N+1))*ctranspose(A_mod)*e;
@@ -69,24 +74,37 @@ h_nmmf_mod_diag = h_mmf_mod_diag/(sqrtm(ctranspose(h_mmf_mod_diag)*h_mmf_mod_dia
 mismatch_loss = -20*log10( max(abs(conv(h_nmmf_mod_diag,x)))/max(abs(conv(h_nmf,x))) );
 fprintf('Mismatch loss, LS mismatched filter with modified A and diagonal loading: %.2f dB\n',mismatch_loss);
 
-figure(5);
-plot(20*log10(abs(conv(x,h_nmmf_mod_diag))));
-title('LS mismatched filter with modified A and diagonal loading');
+%figure(5);
+plot(20*log10(abs(conv(x,h_nmmf_mod_diag))),'color','green');
+%grid on;
+%title('LS Mismatched Filter, modified A, diagonal loading');
+legend({'MMF','MMF modified','MMF diag load','MMF modified diag load'});
 
 figure(6);
 plot(20*log10(abs(conv(y,h_nmf))));
+grid on;
+title('Estimate with Normalized matched filter');
 
 figure(7);
 plot(20*log10(abs(conv(y,h_nmmf))));
+grid on;
+title('Estimate with LS mismatched filter');
 
 figure(8);
 plot(20*log10(abs(conv(y,h_nmmf_mod))));
+grid on;
+title('Estimate with LS mismatched filter, modified A');
 
 figure(9);
 plot(20*log10(abs(conv(y,h_nmmf_diag))));
+grid on;
+title('Estimate with LS mismatched filter, diagonally loaded');
 
 figure(10);
 plot(20*log10(abs(conv(y,h_nmmf_mod_diag))));
+grid on;
+title('Estimate with LS mismatched filter, diagonally loaded, modified A');
+
 
 
 
