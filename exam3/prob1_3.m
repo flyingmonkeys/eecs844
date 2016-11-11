@@ -51,30 +51,63 @@ for n=M_w+1:10000
 end
 
 %% Plots--------------
+
 figure(1);
-freqz(ww);
-title('Frequency/Phase response, Wiener filter');
+[H1,W] = freqz(ww);
+[H2,W] = freqz(a);
+W = linspace(0,1,length(H1));
+h0(1)=subplot(2,1,1);
+plot(W,20*log10(abs(H1)));
+grid on;
+hold on;
+plot(W,20*log10(abs(H2)),'color','red');
+title('Frequency/Phase Response');
+ylabel('Magnitude (dB)');
+xlabel('Normalized Frequency (x pi rad/sample)');
+legend({'Wiener filter','Forward LP filter'});
+h0(2)=subplot(2,1,2);
+plot(W,angle(H1)*180/pi);
+grid on;
+hold on;
+plot(W,angle(H2)*180/pi,'color','red');
+ylabel('Phase (deg)');
+xlabel('Normalized Frequency (x pi rad/sample)');
+linkaxes(h0,'x');
+legend({'Wiener filter','Forward LP filter'});
 
 figure(2);
-freqz(a);
-title('Frequency/Phase response, forward linear prediction filter');
-
-figure(3);
 plot(abs(ww),'color','blue');
 grid on;
 hold on;
 plot(abs(a),'color','red');
 title('Filter Magnitude');
+ylabel('Magnitude');
+xlabel('Tap number');
 legend({'Wiener filter','Forward LP'});
 
-figure(4);
-plot(angle(ww),'color','blue');
+figure(3);
+plot(angle(ww)*180/pi,'color','blue');
 grid on;
 hold on;
-plot(angle(a),'color','red');
+plot(angle(a)*180/pi,'color','red');
 title('Filter Phase');
+ylabel('Phase (deg)');
+xlabel('Tap number');
 legend({'Wiener filter','Forward LP'});
 
+
+
+
+
+
+
+
+
+
+
+
+
+%{
 figure(5);
 e = y - x;
 plot(abs(e));
@@ -91,3 +124,4 @@ title('Filter output');
 hold on;
 plot(abs(y_lp),'color','red');
 legend({'Wiener','LP'});
+%}
