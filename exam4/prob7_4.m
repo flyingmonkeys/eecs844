@@ -21,22 +21,12 @@ endswitch
 p = M; % number of sensors
 n = N; % number of time samples
 
-R = zeros(M,M);
-
-% Create X matrix
-for k=1:N
-	X(:,k) = flipud(A(k:k+M-1));
-end
-
-% Calculate autocorrelation matrix R
-R = (1/N)*X*ctranspose(X);
-
 % Form a reflection matrix and forward-backward estimate of R
 J = zeros(M,M);
 for idx=1:M
     J(M-idx+1,M-idx+1) = 1;
 end
-Rfb = (1/(2*N))*(X*ctranspose(X) + J*conj(X)*transpose(X)*J);
+Rfb = (1/(2*N))*(A*ctranspose(A) + J*conj(A)*transpose(A)*J);
 
 
 % since R is square PSDH, it can be decomposed via eigen decomposition
