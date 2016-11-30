@@ -13,9 +13,14 @@ mu_hat = 0.125/M; % step size
 delta = 0.03;     % leakage factor
 
 %% Wiener filter---------------------
-% Calculate R
-rc = xcorr(x,M-1,'unbiased');
-Rxx = toeplitz(conj(flipud(rc(1:M))));
+X = zeros(M,K);
+% Create X matrix
+for k=1:K-M+1
+    X(:,k) = flipud(x(k:k+M-1));
+end
+
+% Calculate autocorrelation matrix R
+Rxx = (1/(K-M+1))*X*ctranspose(X);
 
 % Calculate P
 P = zeros(M,1);

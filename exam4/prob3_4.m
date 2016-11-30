@@ -12,9 +12,14 @@ K = length(x);
 lambda_array = [0.99 0.998 0.9995];
 
 %% Wiener filter---------------------
-% Calculate R
-rc = xcorr(x,M-1,'unbiased');
-Rxx = toeplitz(conj(flipud(rc(1:M))));
+X = zeros(M,K);
+% Create X matrix
+for k=1:K-M+1
+    X(:,k) = flipud(x(k:k+M-1));
+end
+
+% Calculate autocorrelation matrix R
+Rxx = (1/(K-M+1))*X*ctranspose(X);
 
 % Calculate Pdx
 Pdx = zeros(M,1);
