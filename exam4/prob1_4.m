@@ -69,12 +69,14 @@ plot(abs(y_l),'color','green');
 
 figure(2);
 plot(20*log10(e_squared));
-title(‘Squared Error’);
-xlabel(‘Iteration number’);
-ylabel(‘squared error (dB)’);
+title('Squared Error');
+xlabel('Iteration number');
+ylabel('squared error (dB)');
+grid on;
 
 figure(3);
 plot(20*log10(squared_dev));
-title(‘Squared Deviation’);
-xlabel(‘Iteration number’);
-ylabel(‘squared deviation (dB)’);
+title('Squared Deviation');
+xlabel('Iteration number');
+ylabel('squared deviation (dB)');
+grid on;

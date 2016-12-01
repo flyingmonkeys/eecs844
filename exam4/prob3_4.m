@@ -66,18 +66,20 @@ plot(20*log10(e_squared(:,1)));
 hold on
 plot(20*log10(e_squared(:,2)),'color','red');
 plot(20*log10(e_squared(:,3)),'color','green');
-title(‘Squared Error’);
-xlabel(‘Iteration number’);
-ylabel(‘squared error (dB)’);
-legend({‘0.99’,’0.998’,’0.9995’});
+title('Squared Error');
+xlabel('Iteration number');
+ylabel('squared error (dB)');
+legend({'0.99','0.998','0.9995'});
+grid on;
 
 figure(3);
 plot(20*log10(squared_dev(:,1)));
 hold on;
 plot(20*log10(squared_dev(:,2)),'color','red');
 plot(20*log10(squared_dev(:,3)),'color','green');
-title(‘Squared Deviation’);
-xlabel(‘Iteration number’);
-ylabel(‘squared deviation (dB)’);
-legend({‘0.99’,’0.998’,’0.9995’});
+title('Squared Deviation');
+xlabel('Iteration number');
+ylabel('squared deviation (dB)');
+legend({'0.99','0.998','0.9995'});
+grid on;
 
