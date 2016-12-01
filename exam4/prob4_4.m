@@ -1,13 +1,17 @@
-% Problem 4, Exam 4
+% Exam 4 Problem 4
 
 clear all;
+close all;
+hold off;
 
 load p4.mat; % loads x
 
 segment_lengths = [1 6 12 24 48];
 R = 200; % number of PSD bins
-Pxx = zeros(R,max(segment_lengths));
+Pxx = zeros(R,max(segment_lengths)); % PSD for each segment
 w = linspace(-pi,pi,R);
+
+figure(1);
 
 % Cycle through all segment lengths
 for idx=1:length(segment_lengths)
@@ -28,24 +32,22 @@ for idx=1:length(segment_lengths)
     
     % Now take the average of all periodograms to get the Bartlett average
     PxxB = zeros(R,1);
-    for f=1:R
+    for f=1:R      % cycle through all frequencies
         sum = 0;
-        for i=1:K
+        for i=1:K  % cycle through all segments for this frequency
             sum = sum + Pxx(f,i);
         end
         PxxB(f) = sum / K;
     end
     
-    theta = linspace(-pi,pi,R);
-%theta = 1:length(PxxB);
-
-    % MVDR Power Spectrum (electrical angle)
-    figure(idx);
-    plot(theta,20*log10(abs(PxxB)));
-    title('MVDR Power Spectrum');
-    xlabel('Frequency (rad)');
-    ylabel('Magnitude (dB)');
-
+    % Power Spectral Density
+    plot(w,20*log10(abs(PxxB)));
+    hold on;
 end
 
+title('Bartlett Power Spectral Density');
+xlabel('Frequency (rad)');
+ylabel('Magnitude (dB)');
+legend({'1','6','12','24','48'});
+grid on;
 
