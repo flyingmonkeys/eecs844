@@ -37,9 +37,9 @@ for idx=1:length(p_vals)
     ar = zeros(M,1);
     ar(1) = 1.0;
     ar(2:M) = conj(a);
-
+    
     % Plot frequency response using freqz
-    [H,W] = freqz(1,a,L);
+    [H,W] = freqz(1,ar,L);
     plot(w,20*log10(abs(H)));
     hold on;
 end
