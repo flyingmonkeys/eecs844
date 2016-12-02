@@ -7,21 +7,22 @@ hold off;
 load p4.mat; % loads x
 
 segment_lengths = [1 6 12 24 48];
-R = 200; % number of PSD bins
-Pxx = zeros(R,max(segment_lengths)); % PSD for each segment
-w = linspace(-pi,pi,R);
+%segment_lengths = [24 48];
+% PSD for each segment
+Pxx = zeros(length(x)/min(segment_lengths),max(segment_lengths));
 
 figure(1);
 
 % Cycle through all segment lengths
 for idx=1:length(segment_lengths)
     K = segment_lengths(idx);
-    M = floor(length(x)/K);
-
+    M = floor(length(x)/K); % number of bins in this PSD
+    w = linspace(-pi,pi,M);
+        
     % Cycle through all K segments
     for i=0:K-1
         % Compute ith Pxx(f) over all f
-        for f=1:R
+        for f=1:M
             sum = 0;
             for n=0:M-1
                 sum = sum + x(n+1+(i*M))*exp(-j*w(f)*n);
@@ -31,8 +32,8 @@ for idx=1:length(segment_lengths)
     end
     
     % Now take the average of all periodograms to get the Bartlett average
-    PxxB = zeros(R,1);
-    for f=1:R      % cycle through all frequencies
+    PxxB = zeros(M,1);
+    for f=1:M      % cycle through all frequencies
         sum = 0;
         for i=1:K  % cycle through all segments for this frequency
             sum = sum + Pxx(f,i);
