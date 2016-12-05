@@ -16,6 +16,7 @@ for idx=1:length(segment_lengths)
     K = segment_lengths(idx);
     M = floor(length(x)/K); % number of bins in this PSD
     w = linspace(-pi,pi,M);
+    degrees = linspace(-180,180,M);
     Pxx = zeros(M,1);       % PSD for each segment
     
     % Cycle through all K segments
@@ -34,12 +35,12 @@ for idx=1:length(segment_lengths)
     Pxx = Pxx / K;
     
     % Plot Power Spectral Density
-    plot(w,20*log10(abs(Pxx)));
+    plot(degrees,20*log10(abs(Pxx)));
     hold on;
 end
 
 title('Bartlett Power Spectral Density');
-xlabel('Frequency (rad)');
+xlabel('Frequency (degrees)');
 ylabel('Magnitude (dB)');
 legend({'1','6','12','24','48'});
 grid on;
