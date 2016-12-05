@@ -5,12 +5,8 @@ close all;
 hold off;
 
 load p6.mat; % loads X1..X4
-order = [4 1 4 1; ...
-         8 2 4 2; ...
-         4 4 4 11]; % array of BIC-derived orders for each problem
-
-M_hat = 12;
-     
+M_hat = 12;  % sub-array size for spatial smoothing
+    
 % Cycle through all four data sets
 for a=1:4
     % Select data set to analyze
@@ -54,15 +50,20 @@ for a=1:4
     Rss = Rss / (L*K);
 
     % Choose autocorrelation matrix to use for analysis
-    R = Rfb;
-    %M = M_hat;
+    %R = Rxx;            % uncomment for SCM
+    %R = Rfb;            % uncomment for FB
+    R = Rss; M = M_hat; % uncomment for SS
     
     % since R is square PSDH, it can be decomposed via eigen decomposition
     % since R is Hermitian, lambdas are real-valued
     % Get eigenvalues and eigenvectors of R
     [V, lambda] = eig(R);
-    lambda = diag(lambda);
-    l = real(flipud(sort(lambda)));
+    lambda = real(diag(lambda));
+    l = flipud(sort(lambda));
+    if( lambda(1) ~= l(1) )
+        V = fliplr(V); % if MATLAB didn't place the dominant eigenvalues first,
+                       % then flip the V matrix
+    end
     
     % Calculate the BIC (Bayesian Information Criterion)
     BIC = zeros(p,1);
@@ -82,7 +83,7 @@ for a=1:4
     
     % Declare number of detected signals
     p = min_index-1;
-    
+
     % Compute pseudo-spectrum
     numsamps = 20*M;
     theta = linspace(-pi,pi,numsamps);
@@ -99,7 +100,7 @@ for a=1:4
         PS(idx) = 1/U;
     end
 
-    % MVDR Power Spectrum (electrical angle)
+    % MUSIC pseudo-spectrum vs. electrical angle
     plot(degrees,20*log10(abs(PS)));
     hold on;
 end
@@ -109,6 +110,3 @@ xlabel('Electrical Theta (deg)');
 ylabel('Magnitude (dB)');
 grid on;
 legend({'X1','X2','X3','X4'});
-
-figure(2)
-pmusic(ctranspose(X1),4); % comparison MUSIC from MATLAB built-in function

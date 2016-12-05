@@ -45,7 +45,6 @@ for a=1:4
     [V, lambda] = eig(Rss);
     lambda = diag(lambda);
     l = real(flipud(sort(lambda)));
-    fprintf('Condition number = %d\n',cond(Rss));
     
     % Calculate the BIC (Bayesian Information Criterion)
     BIC = zeros(p,1);
