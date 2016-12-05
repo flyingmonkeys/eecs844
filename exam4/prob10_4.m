@@ -5,7 +5,7 @@ close all;
 hold off;
 
 load p6.mat; % loads X1..X4
-M_hat = 12;  % sub-array size for spatial smoothing
+M_hat = 12;  % sub-array size for spatial smoothing case
     
 % Cycle through all four data sets
 for a=1:4
@@ -28,10 +28,10 @@ for a=1:4
     K = M-M_hat+1;   % number of sub-arrays to average
     p = M_hat;       % number of sub-array sensors
 
-    % Calculate autocorrelation matrix R
+    % Calculate autocorrelation matrix Rxx
     Rxx = (1/N)*A*ctranspose(A);
 
-    % Form a reflection matrix and forward-backward estimate of R
+    % Form a reflection matrix and forward-backward estimate of Rfb
     J = zeros(M,M);
     for idx=1:M
         J(M-idx+1,idx) = 1;
@@ -58,11 +58,15 @@ for a=1:4
     % since R is Hermitian, lambdas are real-valued
     % Get eigenvalues and eigenvectors of R
     [V, lambda] = eig(R);
-    lambda = real(diag(lambda));
+    lambda = real(diag(lambda)); % force real-only
     l = flipud(sort(lambda));
+    
+    % Check to see if MATLAB didn't order the dominant eigenvalues
+    % and eigenvectors at the beginning of the matrix. If not, then
+    % use fliplr to order it correctly. Or course this assumes that
+    % the eigenvalues and associated eigenvectors are sorted as well.
     if( lambda(1) ~= l(1) )
-        V = fliplr(V); % if MATLAB didn't place the dominant eigenvalues first,
-                       % then flip the V matrix
+        V = fliplr(V);
     end
     
     % Calculate the BIC (Bayesian Information Criterion)
@@ -89,7 +93,7 @@ for a=1:4
     theta = linspace(-pi,pi,numsamps);
     degrees = linspace(-180,180,numsamps);
     
-    PS = zeros(numsamps,1);
+    PS = zeros(numsamps,1); % pseudo-spectrum
     for idx=1:numsamps
         U = 0.0;
         for k=p+1:M
@@ -105,7 +109,7 @@ for a=1:4
     hold on;
 end
 
-title('MUSIC Pseudo-Spectrum');
+title('MUSIC Pseudo-Spectrum (SS)');
 xlabel('Electrical Theta (deg)');
 ylabel('Magnitude (dB)');
 grid on;
