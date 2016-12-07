@@ -45,7 +45,7 @@ for idx=1:length(p_vals)
 end
 
 title('Yule-Walker Power Spectral Density');
-xlabel('Frequency (rad)');
+xlabel('Normalized Frequency (rad/sample)');
 ylabel('Magnitude (dB)');
 legend({'4','6','8'});
 grid on;
