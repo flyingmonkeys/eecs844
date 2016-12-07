@@ -9,7 +9,7 @@ load p4.mat; % loads x
 K = length(x);
 p_vals = [4 6 8];
 L = 200; % number of PSD bins
-w = linspace(-pi,pi,L);
+w = linspace(0,2*pi,L);
 
 figure(1);
 
