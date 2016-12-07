@@ -39,13 +39,13 @@ for idx=1:length(p_vals)
     ar(2:M) = conj(a);
     
     % Plot frequency response using freqz
-    [H,W] = freqz(1,ar,L);
+    [H,W] = freqz(1,ar,L,'whole');
     plot(w,20*log10(abs(H)));
     hold on;
 end
 
 title('Yule-Walker Power Spectral Density');
 xlabel('Normalized Frequency (rad/sample)');
-ylabel('Magnitude (dB)');
+ylabel('Magnitude (dB/rad/sample)');
 legend({'4','6','8'});
 grid on;
